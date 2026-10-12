@@ -39,6 +39,8 @@ export interface Tenant {
     branch_mode: BranchMode;
     features?: Record<string, boolean>;
     print_settings?: PrintSettings;
+    /** Shop UI color scheme preset id (forest | ocean | navy | harvest | slate | field) */
+    color_theme?: string;
   };
   created_at: string;
 }

@@ -2,8 +2,10 @@ import type { Metadata } from 'next';
 import './globals.css';
 import AppShell from '@/components/layout/AppShell';
 import { ToastProvider } from '@/components/ui/Toast';
+import { ColorThemeProvider } from '@/components/theme/ColorThemeProvider';
 import { Poppins, DM_Sans, Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
+import { COLOR_THEME_STORAGE_KEY, DEFAULT_COLOR_THEME } from '@/lib/color-themes';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -37,12 +39,26 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn(poppins.variable, dmSans.variable, inter.variable)}>
+    <html
+      lang="en"
+      data-color-theme={DEFAULT_COLOR_THEME}
+      className={cn(poppins.variable, dmSans.variable, inter.variable)}
+      suppressHydrationWarning
+    >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var k=${JSON.stringify(COLOR_THEME_STORAGE_KEY)};var t=localStorage.getItem(k);if(t)document.documentElement.setAttribute('data-color-theme',t);}catch(e){}})();`,
+          }}
+        />
+      </head>
       <body className="min-h-screen bg-background font-sans text-foreground antialiased">
         <ToastProvider>
-          <AppShell>
-            {children}
-          </AppShell>
+          <ColorThemeProvider>
+            <AppShell>
+              {children}
+            </AppShell>
+          </ColorThemeProvider>
         </ToastProvider>
       </body>
     </html>

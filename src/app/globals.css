@@ -7,14 +7,15 @@
 */
 :root {
   color-scheme: light;
-  --kd-primary: #145c3a;
+  /* Default = Harvest Amber */
+  --kd-primary: #b45309;
   --kd-primary-foreground: #ffffff;
-  --kd-accent: #2c4a86;
-  --kd-background: #f4f6f8;
+  --kd-accent: #166534;
+  --kd-background: #faf6f1;
   --kd-surface: #ffffff;
-  --kd-border: #e7eaee;
-  --kd-text: #101828;
-  --kd-muted: #667085;
+  --kd-border: #ebe2d6;
+  --kd-text: #1c1917;
+  --kd-muted: #78716c;
   --kd-success: #15803d;
   --kd-warning: #b45309;
   --kd-danger: #b91c1c;
@@ -30,19 +31,171 @@
 
 .dark {
   color-scheme: dark;
-  --kd-primary: #3d9a6a;
-  --kd-primary-foreground: #052e1c;
-  --kd-accent: #8eace8;
-  --kd-background: #0c0f0e;
-  --kd-surface: #141816;
-  --kd-border: #2a302c;
-  --kd-text: #f3f4f6;
-  --kd-muted: #9ca3af;
+  /* Default dark = Harvest Amber */
+  --kd-primary: #fbbf24;
+  --kd-primary-foreground: #422006;
+  --kd-accent: #4ade80;
+  --kd-background: #120e0a;
+  --kd-surface: #1c1610;
+  --kd-border: #3a2f24;
+  --kd-text: #f5f0e8;
+  --kd-muted: #a8a29e;
   --kd-success: #4ade80;
   --kd-warning: #fbbf24;
   --kd-danger: #f87171;
   --kd-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
   --kd-chart-2: var(--kd-accent);
+  --kd-chart-3: color-mix(in srgb, var(--kd-accent) 40%, black);
+  --kd-primary-soft: color-mix(in srgb, var(--kd-primary) 18%, transparent);
+  --kd-accent-soft: color-mix(in srgb, var(--kd-accent) 16%, transparent);
+}
+
+/* ── Color scheme presets (Settings → Appearance) ─────────────────
+   Default light/dark tokens stay in :root / .dark above (Forest).
+   These rules only override when a preset is selected.
+*/
+html[data-color-theme='forest']:not(.dark) {
+  --kd-primary: #365314;
+  --kd-primary-foreground: #ffffff;
+  --kd-accent: #9a3412;
+  --kd-background: #f5f6f0;
+  --kd-surface: #ffffff;
+  --kd-border: #e2e6d8;
+  --kd-text: #1a1f14;
+  --kd-muted: #6b7260;
+}
+
+html.dark[data-color-theme='forest'] {
+  --kd-primary: #a3e635;
+  --kd-primary-foreground: #1a2e05;
+  --kd-accent: #fb923c;
+  --kd-background: #0f120c;
+  --kd-surface: #171b12;
+  --kd-border: #2c3324;
+  --kd-text: #f1f4ea;
+  --kd-muted: #a3a899;
+}
+
+html[data-color-theme='ocean']:not(.dark) {
+  --kd-primary: #0e4d6e;
+  --kd-primary-foreground: #ffffff;
+  --kd-accent: #047857;
+  --kd-background: #f1f7fa;
+  --kd-surface: #ffffff;
+  --kd-border: #d3e3ec;
+  --kd-text: #0c1a22;
+  --kd-muted: #5a7080;
+}
+
+html.dark[data-color-theme='ocean'] {
+  --kd-primary: #38bdf8;
+  --kd-primary-foreground: #082f49;
+  --kd-accent: #34d399;
+  --kd-background: #071018;
+  --kd-surface: #0f1a22;
+  --kd-border: #1e3340;
+  --kd-text: #e6f3fa;
+  --kd-muted: #8fa8b8;
+}
+
+html[data-color-theme='navy']:not(.dark) {
+  --kd-primary: #111827;
+  --kd-primary-foreground: #ffffff;
+  --kd-accent: #65a30d;
+  --kd-background: #f7faf3;
+  --kd-surface: #ffffff;
+  --kd-border: #e2e8d8;
+  --kd-text: #0f172a;
+  --kd-muted: #647048;
+}
+
+html.dark[data-color-theme='navy'] {
+  --kd-primary: #e5e7eb;
+  --kd-primary-foreground: #111827;
+  --kd-accent: #a3e635;
+  --kd-background: #090b10;
+  --kd-surface: #11141b;
+  --kd-border: #252a35;
+  --kd-text: #f3f4f6;
+  --kd-muted: #9ca3af;
+}
+
+html[data-color-theme='harvest']:not(.dark) {
+  --kd-primary: #b45309;
+  --kd-primary-foreground: #ffffff;
+  --kd-accent: #166534;
+  --kd-background: #faf6f1;
+  --kd-surface: #ffffff;
+  --kd-border: #ebe2d6;
+  --kd-text: #1c1917;
+  --kd-muted: #78716c;
+}
+
+html.dark[data-color-theme='harvest'] {
+  --kd-primary: #fbbf24;
+  --kd-primary-foreground: #422006;
+  --kd-accent: #4ade80;
+  --kd-background: #120e0a;
+  --kd-surface: #1c1610;
+  --kd-border: #3a2f24;
+  --kd-text: #f5f0e8;
+  --kd-muted: #a8a29e;
+}
+
+html[data-color-theme='slate']:not(.dark) {
+  --kd-primary: #57534e;
+  --kd-primary-foreground: #ffffff;
+  --kd-accent: #15803d;
+  --kd-background: #f7f6f4;
+  --kd-surface: #ffffff;
+  --kd-border: #e7e5e4;
+  --kd-text: #1c1917;
+  --kd-muted: #78716c;
+}
+
+html.dark[data-color-theme='slate'] {
+  --kd-primary: #d6d3d1;
+  --kd-primary-foreground: #292524;
+  --kd-accent: #4ade80;
+  --kd-background: #12100e;
+  --kd-surface: #1c1917;
+  --kd-border: #3f3a36;
+  --kd-text: #f5f5f4;
+  --kd-muted: #a8a29e;
+}
+
+html[data-color-theme='field']:not(.dark) {
+  --kd-primary: #1e40af;
+  --kd-primary-foreground: #ffffff;
+  --kd-accent: #a16207;
+  --kd-background: #f4f6fb;
+  --kd-surface: #ffffff;
+  --kd-border: #dbe1f0;
+  --kd-text: #0f172a;
+  --kd-muted: #64748b;
+}
+
+html.dark[data-color-theme='field'] {
+  --kd-primary: #93c5fd;
+  --kd-primary-foreground: #1e3a8a;
+  --kd-accent: #fbbf24;
+  --kd-background: #0a0f1c;
+  --kd-surface: #111827;
+  --kd-border: #1e293b;
+  --kd-text: #e8eef8;
+  --kd-muted: #94a3b8;
+}
+
+/* Soft fills / charts stay derived from primary + accent for every preset */
+html[data-color-theme] {
+  --kd-chart-1: var(--kd-primary);
+  --kd-chart-2: var(--kd-accent);
+  --kd-chart-3: color-mix(in srgb, var(--kd-accent) 35%, white);
+  --kd-primary-soft: color-mix(in srgb, var(--kd-primary) 10%, transparent);
+  --kd-accent-soft: color-mix(in srgb, var(--kd-accent) 10%, transparent);
+}
+
+html.dark[data-color-theme] {
   --kd-chart-3: color-mix(in srgb, var(--kd-accent) 40%, black);
   --kd-primary-soft: color-mix(in srgb, var(--kd-primary) 18%, transparent);
   --kd-accent-soft: color-mix(in srgb, var(--kd-accent) 16%, transparent);

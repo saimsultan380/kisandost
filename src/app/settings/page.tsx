@@ -1,24 +1,42 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { dataStore } from '@/lib/data-store';
 import { useShopChrome } from '@/components/layout/ShopChrome';
-import { Settings, ShieldCheck, Store, Printer, Save, CheckCircle, Info } from 'lucide-react';
+import { Settings, ShieldCheck, Store, Printer, Save, CheckCircle, Info, Palette } from 'lucide-react';
 import { PrintSettings, DEFAULT_PRINT_SETTINGS } from '@/lib/types';
 import PrintableReceipt from '@/components/PrintableReceipt';
 import { usePrintReceipt } from '@/lib/use-print-receipt';
 import { useToast } from '@/components/ui/Toast';
+import { useColorTheme } from '@/components/theme/ColorThemeProvider';
+import { resolveColorThemeId, type ColorThemeId } from '@/lib/color-themes';
 
 export default function SettingsPage() {
   const chrome = useShopChrome();
   const [tenant, setTenant] = useState(() => dataStore.getTenant());
   const { triggerPrint } = usePrintReceipt();
   const { showToast } = useToast();
+  const { themeId, themes, setThemeId } = useColorTheme();
 
   const [printSettings, setPrintSettings] = useState<PrintSettings>(() => ({
     ...DEFAULT_PRINT_SETTINGS,
     ...(tenant.settings?.print_settings ?? {}),
   }));
+
+  // Prefer shop-saved theme when opening Settings (only if previously saved)
+  useEffect(() => {
+    if (tenant.settings?.color_theme) {
+      setThemeId(resolveColorThemeId(tenant.settings.color_theme));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- hydrate once from tenant
+  }, []);
+
+  const handleSelectTheme = (id: ColorThemeId) => {
+    setThemeId(id);
+    const updated = dataStore.updateTenantSettings({ color_theme: id });
+    setTenant({ ...updated });
+    showToast(`Color scheme switched to ${themes.find((t) => t.id === id)?.name ?? id}.`, 'success');
+  };
 
   const handleSavePrintSettings = (e: React.FormEvent) => {
     e.preventDefault();
@@ -103,6 +121,60 @@ export default function SettingsPage() {
               </p>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* ================= COLOR SCHEME / APPEARANCE ================= */}
+      <div className="bg-[var(--kd-surface)] p-6 rounded-xl shadow-[var(--kd-shadow)] border border-border space-y-5">
+        <div className="flex flex-wrap items-start justify-between gap-3 border-b border-border pb-3">
+          <div className="flex items-center space-x-2.5">
+            <div className="rounded-xl bg-[var(--kd-primary-soft)] p-2 text-primary">
+              <Palette className="h-5 w-5" />
+            </div>
+            <div>
+              <h2 className="font-semibold text-base text-foreground">Color scheme</h2>
+              <p className="text-2xs text-muted-foreground">
+                Pick a look for buttons, charts, and shop screens. Applies instantly and saves for this shop.
+              </p>
+            </div>
+          </div>
+          <span className="rounded-full bg-[var(--kd-primary-soft)] px-3 py-1 text-2xs font-semibold text-primary">
+            Active: {themes.find((t) => t.id === themeId)?.name ?? 'Harvest Amber'}
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          {themes.map((theme) => {
+            const selected = theme.id === themeId;
+            return (
+              <button
+                key={theme.id}
+                type="button"
+                onClick={() => handleSelectTheme(theme.id)}
+                className={`rounded-xl border p-4 text-left transition-all cursor-pointer ${
+                  selected
+                    ? 'border-primary bg-[var(--kd-primary-soft)] ring-2 ring-primary/40'
+                    : 'border-border bg-background hover:border-primary/40 hover:bg-[var(--kd-primary-soft)]/50'
+                }`}
+              >
+                <div className="mb-3 flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-1.5">
+                    {theme.swatches.map((color) => (
+                      <span
+                        key={color}
+                        className="size-6 rounded-full border border-border shadow-sm"
+                        style={{ backgroundColor: color }}
+                        aria-hidden
+                      />
+                    ))}
+                  </div>
+                  {selected && <CheckCircle className="size-4 shrink-0 text-primary" />}
+                </div>
+                <div className="text-sm font-semibold text-foreground">{theme.name}</div>
+                <p className="mt-1 text-2xs text-muted-foreground leading-relaxed">{theme.description}</p>
+              </button>
+            );
+          })}
         </div>
       </div>
 
